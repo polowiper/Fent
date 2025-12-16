@@ -1,33 +1,144 @@
 #pragma once
+#include "token.hpp"
 #include <memory>
 #include <string>
 #include <variant>
+#include <vector>
+class Expr;
+class Stmt;
 
-struct Expr;
 using ExprPtr = std::unique_ptr<Expr>;
+using StmtPtr = std::unique_ptr<Stmt>;
 
-struct BinaryOp {
-  std::string op;
+class Expr {
+public:
+  virtual ~Expr() = default;
+};
+
+class LiteralExpr : public Expr {
+public:
+  std::variant<int, bool, std::string> value;
+
+  explicit LiteralExpr(std::variant<int, bool, std::string> val)
+      : value(std::move(val)) {}
+};
+
+class IdentifierExpr : public Expr {
+public:
+  std::string name;
+
+  explicit IdentifierExpr(std::string n) : name(std::move(n)) {}
+};
+
+class BinaryExpr : public Expr {
+public:
+  std::string op; // "+", "-", "*", "/", "%", "==", "<", ">"
   ExprPtr left;
   ExprPtr right;
+
+  BinaryExpr(std::string operation, ExprPtr l, ExprPtr r)
+      : op(std::move(operation)), left(std::move(l)), right(std::move(r)) {}
 };
 
-struct UnaryOp {
-  std::string op;
+class UnaryExpr : public Expr {
+public:
+  std::string op; // "-", "!"
   ExprPtr operand;
+
+  UnaryExpr(std::string operation, ExprPtr expr)
+      : op(std::move(operation)), operand(std::move(expr)) {}
 };
 
-struct Identifier {
+// foo(a, b, c)
+class CallExpr : public Expr {
+public:
+  std::string function;
+  std::vector<ExprPtr> arguments;
+
+  CallExpr(std::string func, std::vector<ExprPtr> args)
+      : function(std::move(func)), arguments(std::move(args)) {}
+};
+
+class Stmt {
+public:
+  virtual ~Stmt() = default;
+};
+
+// x + 5;
+class ExprStmt : public Stmt {
+public:
+  ExprPtr expression;
+
+  explicit ExprStmt(ExprPtr expr) : expression(std::move(expr)) {}
+};
+
+// const x = 10;
+class VarDeclStmt : public Stmt {
+public:
   std::string name;
+  ExprPtr initializer;
+  bool isConst;
+
+  VarDeclStmt(std::string n, ExprPtr init, bool constant = false)
+      : name(std::move(n)), initializer(std::move(init)), isConst(constant) {}
 };
 
-struct Literal {
-  std::variant<int, char, bool> value;
+// x = 42;
+class AssignStmt : public Stmt {
+public:
+  std::string name;
+  ExprPtr value;
+
+  AssignStmt(std::string n, ExprPtr val)
+      : name(std::move(n)), value(std::move(val)) {}
 };
 
-struct Expr {
-  using Variant = std::variant<BinaryOp, UnaryOp, Identifier, Literal>;
-  Variant node;
+//{ stmt1; stmt2; ... }
+class BlockStmt : public Stmt {
+public:
+  std::vector<StmtPtr> statements;
 
-  template <class T> explicit Expr(T v) : node(std::move(v)) {}
+  explicit BlockStmt(std::vector<StmtPtr> stmts)
+      : statements(std::move(stmts)) {}
 };
+
+// if (condition) thenBranch else elseBranch
+class IfStmt : public Stmt {
+public:
+  ExprPtr condition;
+  StmtPtr thenBranch;
+  StmtPtr elseBranch; // can be nullptr
+
+  IfStmt(ExprPtr cond, StmtPtr thenBr, StmtPtr elseBr = nullptr)
+      : condition(std::move(cond)), thenBranch(std::move(thenBr)),
+        elseBranch(std::move(elseBr)) {}
+};
+
+// while (condition) body
+class WhileStmt : public Stmt {
+public:
+  ExprPtr condition;
+  StmtPtr body;
+
+  WhileStmt(ExprPtr cond, StmtPtr b)
+      : condition(std::move(cond)), body(std::move(b)) {}
+};
+
+// Return statement: return expr;
+class ReturnStmt : public Stmt {
+public:
+  ExprPtr value; // can be nullptr for void return
+
+  explicit ReturnStmt(ExprPtr val = nullptr) : value(std::move(val)) {}
+};
+
+class Program {
+public:
+  static std::vector<StmtPtr> tokens_to_ast(const std::vector<Token> &tokens);
+  std::vector<StmtPtr> statements;
+
+  explicit Program(std::vector<StmtPtr> stmts) : statements(std::move(stmts)) {}
+};
+
+void printExpr(std::ostream &out, const Expr *expr, int indent);
+void printStmt(std::ostream &out, const Stmt *stmt, int indent);
