@@ -20,13 +20,13 @@
       postBuild = ''
         # Remove all symlinks and the original clangd binary
         rm $out/bin/*
-        
+
         # Create wrapper for clangd with custom environment
         makeWrapper ${pkgs.lib.getExe' pkgs.clang-tools "clangd"} $out/bin/clangd \
           --set CPATH "${pkgs.lib.makeSearchPathOutput "dev" "include" [pkgs.libgcc]}" \
           --set CPLUS_INCLUDE_PATH "${pkgs.stdenv.cc.cc}/include/c++/${pkgs.stdenv.cc.cc.version}:${pkgs.stdenv.cc.cc}/include/c++/${pkgs.stdenv.cc.cc.version}/x86_64-unknown-linux-gnu:${pkgs.lib.getDev pkgs.stdenv.cc.libc}/include" \
           --prefix PATH : ${pkgs.lib.makeBinPath [pkgs.clang-tools]}
-        
+
         # Recreate all other symlinks pointing to the original clangd binary
         ln -s ${pkgs.clang-tools}/bin/clangd $out/bin/clang-format
         ln -s ${pkgs.clang-tools}/bin/clangd $out/bin/clang-tidy
@@ -62,6 +62,8 @@
           libgcc
           cmake
           clang-tools-wrapped
+          nasm
+          asmrepl
           bear
           gnumake
           gdb

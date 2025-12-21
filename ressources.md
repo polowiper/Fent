@@ -1,1 +1,2 @@
 - [Basic x86_64 compiler](https://github.com/jgarzik/xbasic64)
+- [Amd64 manual](https://docs.amd.com/v/u/en-US/40332-PUB_4.08)
