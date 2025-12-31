@@ -1,2 +1,4 @@
 - [Basic x86_64 compiler](https://github.com/jgarzik/xbasic64)
 - [Amd64 manual](https://docs.amd.com/v/u/en-US/40332-PUB_4.08)
+- [Stuff I used to learn assembly](https://www.cs.cmu.edu/~fp/courses/15213-s07/misc/asm64-handout.pdf)
+- [List of Linux kernel syscalls](https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64)

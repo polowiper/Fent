@@ -1,4 +1,4 @@
 #pragma once
-#include <iostream>
 #include "ast.hpp"
-void AstToBin(std::ostream& out, const Program& program);
+#include <iostream>
+void ast_to_bin(std::ostream &out, const Program &program);

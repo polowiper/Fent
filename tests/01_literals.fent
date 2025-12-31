@@ -1,0 +1,6 @@
+const num = 42;
+const str = "Hello World";
+const flagtrue = true;
+const flagfalse = false;
+const zero = 0;
+return num;

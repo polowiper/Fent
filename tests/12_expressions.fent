@@ -1,0 +1,16 @@
+const a = 1 + 2 * 3 - 4 / 2;
+const b = (1 + 2) * (3 - 4) / 2;
+const c = ((1 + 2) * 3 - 4) / (2 + 1);
+
+const d = -5 + 10;
+const e = -(5 + 10);
+const f = -5 * -3;
+
+const g = 10 < 20;
+const h = (5 + 5) == (3 * 3 + 1);
+const i = !(10 > 20);
+
+const j = (1 + 2) < (3 * 4);
+const k = !((5 == 5) == false);
+
+return a;

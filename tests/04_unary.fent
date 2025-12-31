@@ -1,0 +1,12 @@
+const num = 42;
+const neg = -num;
+const doubleneg = --num;
+
+const flag = true;
+const notflag = !flag;
+const doublenot = !!flag;
+
+const expr = -(10 + 5);
+const complex = !((5 > 3) == true);
+
+return neg;

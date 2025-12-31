@@ -55,6 +55,8 @@ public:
   }
 
   StmtPtr parseStatement() {
+    if (match(TokenKind::Define))
+      return parseFunctionDef();
     if (match(TokenKind::Const))
       return parseVarDecl();
     if (match(TokenKind::If))
@@ -91,6 +93,35 @@ public:
     expect(TokenKind::Semicolon, "Expected ';' after variable declaration");
 
     return std::make_unique<VarDeclStmt>(name, std::move(initializer), true);
+  }
+
+  // define foo(const a, const b) { body }
+  StmtPtr parseFunctionDef() {
+    expect(TokenKind::Identifier, "Expected function name");
+    std::string name = previous().lexeme;
+
+    expect(TokenKind::Lpar, "Expected '(' after function name");
+
+    std::vector<FunctionParam> parameters;
+    if (!check(TokenKind::Rpar)) {
+      do {
+        bool isConst = false;
+        if (match(TokenKind::Const)) {
+          isConst = true;
+        }
+        expect(TokenKind::Identifier, "Expected parameter name");
+        std::string paramName = previous().lexeme;
+        parameters.emplace_back(paramName, isConst);
+      } while (match(TokenKind::Comma));
+    }
+
+    expect(TokenKind::Rpar, "Expected ')' after parameters");
+    expect(TokenKind::LBrace, "Expected '{' before function body");
+
+    StmtPtr body = parseBlockStmt();
+
+    return std::make_unique<FunctionDef>(name, std::move(parameters),
+                                         std::move(body));
   }
 
   // if (condition) statement [else statement]
@@ -368,6 +399,15 @@ void printStmt(std::ostream &out, const Stmt *stmt, int indent) {
     } else {
       out << ind << "  NULL (no value assigned)\n";
     }
+  } else if (auto *funcDef = dynamic_cast<const FunctionDef *>(stmt)) {
+    out << ind << "FunctionDef: " << funcDef->name << "\n";
+    out << ind << "  Parameters (" << funcDef->parameters.size() << "):\n";
+    for (const auto &param : funcDef->parameters) {
+      out << ind << "    " << param.name << (param.isConst ? " (const)" : "")
+          << "\n";
+    }
+    out << ind << "  Body:\n";
+    printStmt(out, funcDef->body.get(), indent + INDENT_LEVEL);
   } else {
     out << ind << "UnknownStmt\n";
   }

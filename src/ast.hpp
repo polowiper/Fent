@@ -132,6 +132,25 @@ public:
   explicit ReturnStmt(ExprPtr val = nullptr) : value(std::move(val)) {}
 };
 
+struct FunctionParam {
+  std::string name;
+  bool isConst;
+
+  FunctionParam(std::string n, bool constant = true)
+      : name(std::move(n)), isConst(constant) {}
+};
+
+// Function definition: define foo(const a, const b) { body }
+class FunctionDef : public Stmt {
+public:
+  std::string name;
+  std::vector<FunctionParam> parameters;
+  StmtPtr body;
+
+  FunctionDef(std::string n, std::vector<FunctionParam> params, StmtPtr b)
+      : name(std::move(n)), parameters(std::move(params)), body(std::move(b)) {}
+};
+
 class Program {
 public:
   static std::vector<StmtPtr> tokens_to_ast(const std::vector<Token> &tokens);

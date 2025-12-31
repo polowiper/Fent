@@ -24,6 +24,7 @@ enum class TokenKind {
   While,
   Return,
   Const,
+  Define,
 
   // Operators
   Plus,

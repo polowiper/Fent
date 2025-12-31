@@ -1,0 +1,31 @@
+const x = 10;
+const result = 0;
+
+if (x > 5) {
+    result = 1;
+}
+
+if (x < 5) {
+    result = 2;
+} else {
+    result = 3;
+}
+
+if (x == 10) {
+    result = 4;
+} else if (x == 20) {
+    result = 5;
+} else {
+    result = 6;
+}
+
+const a = 100;
+if (a > 50) {
+    if (a > 75) {
+        if (a > 90) {
+            result = 99;
+        }
+    }
+}
+
+return result;

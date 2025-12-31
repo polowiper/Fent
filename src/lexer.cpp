@@ -1,6 +1,7 @@
 #include "lexer.hpp"
 #include "token.hpp"
 #include <cctype>
+#include <fstream>
 #include <map>
 #include <string>
 #include <vector>
@@ -29,7 +30,7 @@ static TokenKind matchKeyword(const string &text) {
       {"if", TokenKind::If},       {"else", TokenKind::Else},
       {"while", TokenKind::While}, {"return", TokenKind::Return},
       {"const", TokenKind::Const}, {"true", TokenKind::True},
-      {"false", TokenKind::False},
+      {"false", TokenKind::False}, {"define", TokenKind::Define},
   };
 
   auto it = keywords.find(text);
@@ -59,6 +60,7 @@ static Token scanNumber(string_view source, size_t &pos, int line) {
   tok.lexeme = string(source.substr(start, pos - start));
   tok.literal =
       stoi(tok.lexeme); // For now just use int, could be float later idfk
+  // Edit : Uhm well yeah fuck floating point values
   return tok;
 }
 
@@ -275,4 +277,96 @@ vector<Token> lex(string_view source) {
   tokens.push_back(eof);
 
   return tokens;
+}
+
+string tokenKindToString(TokenKind kind) {
+  switch (kind) {
+  case TokenKind::LBrace:
+    return "LBrace";
+  case TokenKind::RBrace:
+    return "RBrace";
+  case TokenKind::Lpar:
+    return "Lpar";
+  case TokenKind::Rpar:
+    return "Rpar";
+  case TokenKind::Semicolon:
+    return "Semicolon";
+  case TokenKind::Comma:
+    return "Comma";
+  case TokenKind::Identifier:
+    return "Identifier";
+  case TokenKind::Number:
+    return "Number";
+  case TokenKind::String:
+    return "String";
+  case TokenKind::True:
+    return "True";
+  case TokenKind::False:
+    return "False";
+  case TokenKind::If:
+    return "If";
+  case TokenKind::Else:
+    return "Else";
+  case TokenKind::While:
+    return "While";
+  case TokenKind::Return:
+    return "Return";
+  case TokenKind::Const:
+    return "Const";
+  case TokenKind::Define:
+    return "Define";
+  case TokenKind::Plus:
+    return "Plus";
+  case TokenKind::Minus:
+    return "Minus";
+  case TokenKind::Multiply:
+    return "Multiply";
+  case TokenKind::Divide:
+    return "Divide";
+  case TokenKind::Modulo:
+    return "Modulo";
+  case TokenKind::Equals:
+    return "Equals";
+  case TokenKind::EqualEqual:
+    return "EqualEqual";
+  case TokenKind::Less:
+    return "Less";
+  case TokenKind::Greater:
+    return "Greater";
+  case TokenKind::Not:
+    return "Not";
+  case TokenKind::And:
+    return "And";
+  case TokenKind::Or:
+    return "Or";
+  case TokenKind::EndOfFile:
+    return "EndOfFile";
+  case TokenKind::Unknown:
+    return "Unknown";
+  default:
+    return "???";
+  }
+}
+
+void output_lex(basic_ofstream<char> &outputFile, std::vector<Token> tokens) {
+
+  for (size_t i = 0; i < tokens.size(); i++) {
+    const Token &tok = tokens[i];
+    outputFile << "Token " << i << ":\n";
+    outputFile << "  Kind: " << tokenKindToString(tok.kind) << "\n";
+    outputFile << "  Lexeme: \"" << tok.lexeme << "\"\n";
+    outputFile << "  Line: " << tok.pos.line << "\n";
+
+    if (holds_alternative<int>(tok.literal)) {
+      outputFile << "  Literal (int): " << get<int>(tok.literal) << "\n";
+    } else if (holds_alternative<bool>(tok.literal)) {
+      outputFile << "  Literal (bool): "
+                 << (get<bool>(tok.literal) ? "true" : "false") << "\n";
+    } else if (holds_alternative<string>(tok.literal)) {
+      outputFile << "  Literal (string): \"" << get<string>(tok.literal)
+                 << "\"\n";
+    }
+
+    outputFile << "\n";
+  }
 }

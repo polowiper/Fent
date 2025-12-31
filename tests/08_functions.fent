@@ -1,0 +1,29 @@
+define add(const a, const b) {
+    return a + b;
+}
+
+define subtract(const a, const b) {
+    return a - b;
+}
+
+define multiply(const a, const b) {
+    return a * b;
+}
+
+define noparams() {
+    return 42;
+}
+
+define noreturn(const x) {
+    const temp = x + 1;
+    return temp;
+}
+
+const x = 10;
+const y = 20;
+const sum = add(x, y);
+const diff = subtract(y, x);
+const prod = multiply(sum, diff);
+const constval = noparams();
+
+return sum;

@@ -1,0 +1,13 @@
+const a = 10;
+const b = 20;
+const c = 10;
+
+const less = a < b;
+const greater = b > a;
+const equal = a == c;
+const notequal = a == b;
+
+const complexcmp = (a + 5) < (b - 5);
+const chain = a < b;
+
+return less;

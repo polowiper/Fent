@@ -1,0 +1,17 @@
+const x = 10;
+const y = x + 5;
+const z = y * 2;
+
+x = 20;
+y = x + y;
+z = (x + y) * z;
+
+const name = "Alice";
+name = "Bob";
+
+const counter = 0;
+counter = counter + 1;
+counter = counter + 1;
+counter = counter + 1;
+
+return counter;

@@ -1,0 +1,61 @@
+define iseven(const n) {
+    const remainder = n % 2;
+    return remainder == 0;
+}
+
+define sumupto(const n) {
+    const sum = 0;
+    const i = 1;
+    while (i < n) {
+        sum = sum + i;
+        i = i + 1;
+    }
+    return sum;
+}
+
+define max(const a, const b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+define min(const a, const b) {
+    if (a < b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+define abs(const n) {
+    if (n < 0) {
+        return -n;
+    } else {
+        return n;
+    }
+}
+
+const x = 10;
+const y = 20;
+const z = 15;
+
+const sum = sumupto(10);
+const maximum = max(x, y);
+const minimum = min(y, z);
+const absolute = abs(-42);
+const evencheck = iseven(x);
+
+if (sum > 50) {
+    const result = max(sum, maximum);
+    print("Large sum");
+}
+
+const counter = 0;
+while (counter < 5) {
+    const currentmax = max(counter, x);
+    counter = counter + 1;
+}
+
+return sum;

@@ -1,5 +1,7 @@
 #pragma once
 #include "token.hpp"
+#include <fstream>
 #include <vector>
-
-std::vector<Token> lex(std::string_view SourceCode);
+using namespace std;
+vector<Token> lex(string_view SourceCode);
+void output_lex(basic_ofstream<char> &outputFile, vector<Token> tokens);

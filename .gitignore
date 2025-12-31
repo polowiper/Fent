@@ -1,1 +1,4 @@
 ./flake.lock
+TODO.md
+*.asm
+*.o
