@@ -1,6 +1,0 @@
-const a = 5;
-const b = 6;
-const res = a+b;
-
-print("On aime tous le monde ici");
-return res;
