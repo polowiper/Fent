@@ -23,7 +23,7 @@ enum class TokenKind {
   Else,
   While,
   Return,
-  Const,
+  Var,
   Define,
 
   // Operators

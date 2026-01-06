@@ -658,24 +658,85 @@ string generate_data_header(const Data_table &data_table) {
 
   string data = "\nsection .data\n";
   for (const auto &str : data_table.strings) {
-    // Format: label: db "string content", 0
-    data += "  " + str.label + ": db \"";
-    // Escape special characters in the string
+    // Format: label: db parts separated by escape sequences
+    data += "  " + str.label + ": db ";
+    
+    // Handle empty strings specially
+    if (str.value.empty()) {
+      data += "0\n";
+      data += "  " + str.label + "_len equ 0\n";
+      continue;
+    }
+    
+    bool in_string = false;
+    bool first_part = true;
+    
     for (char c : str.value) {
+      bool is_special = false;
+      int byte_val = 0;
+      
+      // Check for special characters that need to be output as byte values
       switch (c) {
       case '\n':
-        data += "\", 10, \"";
+        is_special = true;
+        byte_val = 10;
+        break;
       case '\t':
-        data += "\", 9, \"";
+        is_special = true;
+        byte_val = 9;
+        break;
+      case '\r':
+        is_special = true;
+        byte_val = 13;
+        break;
       case '\"':
-        data += "\\\"";
+        is_special = true;
+        byte_val = 34;
+        break;
       case '\\':
-        data += "\\\\";
+        is_special = true;
+        byte_val = 92;
+        break;
       default:
+        break;
+      }
+      
+      if (is_special) {
+        // Close current string if open
+        if (in_string) {
+          data += "\"";
+          in_string = false;
+        }
+        // Add comma separator if not first part
+        if (!first_part) {
+          data += ", ";
+        }
+        // Add the numeric byte value
+        data += to_string(byte_val);
+        first_part = false;
+      } else {
+        // Regular character - add to string
+        if (!in_string) {
+          // Open new string part
+          if (!first_part) {
+            data += ", ";
+          }
+          data += "\"";
+          in_string = true;
+          first_part = false;
+        }
+        // Add regular character
         data += c;
       }
     }
-    data += "\", 0\n";
+    
+    // Close string if still open
+    if (in_string) {
+      data += "\"";
+    }
+    
+    // Add null terminator
+    data += ", 0\n";
     data += "  " + str.label + "_len equ $ - " + str.label + " - 1\n";
   }
   return data;

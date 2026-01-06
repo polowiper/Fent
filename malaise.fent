@@ -1,0 +1,5 @@
+const a = 5;
+const b = 6;
+print("Fuck you if you read this\n");
+res = a+b;
+return res;

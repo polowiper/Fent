@@ -57,7 +57,7 @@ public:
   StmtPtr parseStatement() {
     if (match(TokenKind::Define))
       return parseFunctionDef();
-    if (match(TokenKind::Const))
+    if (match(TokenKind::Var))
       return parseVarDecl();
     if (match(TokenKind::If))
       return parseIfStmt();
@@ -83,7 +83,7 @@ public:
     return parseExprStmt();
   }
 
-  // const x = expression;
+  // var x = expression;
   StmtPtr parseVarDecl() {
     expect(TokenKind::Identifier, "Expected variable name");
     std::string name = previous().lexeme;
@@ -105,13 +105,13 @@ public:
     std::vector<FunctionParam> parameters;
     if (!check(TokenKind::Rpar)) {
       do {
-        bool isConst = false;
-        if (match(TokenKind::Const)) {
-          isConst = true;
+        bool isVar = false;
+        if (match(TokenKind::Var)) {
+          isVar = true;
         }
         expect(TokenKind::Identifier, "Expected parameter name");
         std::string paramName = previous().lexeme;
-        parameters.emplace_back(paramName, isConst);
+        parameters.emplace_back(paramName, isVar);
       } while (match(TokenKind::Comma));
     }
 
@@ -362,7 +362,7 @@ void printStmt(std::ostream &out, const Stmt *stmt, int indent) {
     printExpr(out, expr->expression.get(), indent + INDENT_LEVEL / 2);
   } else if (auto *varDecl = dynamic_cast<const VarDeclStmt *>(stmt)) {
     out << ind << "VarDeclStmt: " << varDecl->name
-        << (varDecl->isConst ? " (const)" : "") << "\n";
+        << (varDecl->isVar ? " (const)" : "") << "\n";
     out << ind << "  Initializer:\n";
     printExpr(out, varDecl->initializer.get(), indent + INDENT_LEVEL);
   } else if (auto *assign = dynamic_cast<const AssignStmt *>(stmt)) {

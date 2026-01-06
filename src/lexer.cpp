@@ -29,7 +29,7 @@ static TokenKind matchKeyword(const string &text) {
   static const map<string, TokenKind> keywords = {
       {"if", TokenKind::If},       {"else", TokenKind::Else},
       {"while", TokenKind::While}, {"return", TokenKind::Return},
-      {"const", TokenKind::Const}, {"true", TokenKind::True},
+      {"var", TokenKind::Var},     {"true", TokenKind::True},
       {"false", TokenKind::False}, {"define", TokenKind::Define},
   };
 
@@ -70,13 +70,49 @@ static Token scanString(string_view source, size_t &pos, int &line) {
   tok.pos.line = line;
   tok.kind = TokenKind::String;
 
-  size_t start = pos;
   pos++; // consume opening quote
 
+  string processed_string;
+
   while (!isAtEnd(pos, source) && peek(pos, source) != '"') {
-    if (peek(pos, source) == '\n')
-      line++;
-    pos++;
+    char c = peek(pos, source);
+
+    // Handle escape sequences
+    if (c == '\\' && !isAtEnd(pos + 1, source)) {
+      pos++; // consume backslash
+      char next = peek(pos, source);
+      switch (next) {
+      case 'n':
+        processed_string += '\n';
+        break;
+      case 't':
+        processed_string += '\t';
+        break;
+      case 'r':
+        processed_string += '\r';
+        break;
+      case '\\':
+        processed_string += '\\';
+        break;
+      case '"':
+        processed_string += '"';
+        break;
+      case '0':
+        processed_string += '\0';
+        break;
+      default:
+        // Unknown escape sequence, just include it as-is
+        processed_string += '\\';
+        processed_string += next;
+        break;
+      }
+      pos++;
+    } else {
+      if (c == '\n')
+        line++;
+      processed_string += c;
+      pos++;
+    }
   }
 
   if (isAtEnd(pos, source)) {
@@ -86,9 +122,8 @@ static Token scanString(string_view source, size_t &pos, int &line) {
   }
 
   pos++; // consume closing quote
-  tok.lexeme =
-      string(source.substr(start + 1, pos - start - 2)); // exclude quotes
-  tok.literal = tok.lexeme;
+  tok.lexeme = processed_string;
+  tok.literal = processed_string;
   return tok;
 }
 
