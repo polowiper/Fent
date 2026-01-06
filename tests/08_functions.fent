@@ -1,12 +1,12 @@
-define add(const a, const b) {
+define add(var a, var b) {
     return a + b;
 }
 
-define subtract(const a, const b) {
+define subtract(var a, var b) {
     return a - b;
 }
 
-define multiply(const a, const b) {
+define multiply(var a, var b) {
     return a * b;
 }
 
@@ -14,16 +14,16 @@ define noparams() {
     return 42;
 }
 
-define noreturn(const x) {
-    const temp = x + 1;
+define noreturn(var x) {
+    var temp = x + 1;
     return temp;
 }
 
-const x = 10;
-const y = 20;
-const sum = add(x, y);
-const diff = subtract(y, x);
-const prod = multiply(sum, diff);
-const constval = noparams();
+var x = 10;
+var y = 20;
+var sum = add(x, y);
+var diff = subtract(y, x);
+var prod = multiply(sum, diff);
+var constval = noparams();
 
 return sum;

@@ -1,22 +1,22 @@
-const counter = 0;
-const sum = 0;
+var counter = 0;
+var sum = 0;
 
 while (counter < 10) {
     sum = sum + counter;
     counter = counter + 1;
 }
 
-const i = 0;
+var i = 0;
 while (i < 5) {
-    const j = 0;
+    var j = 0;
     while (j < 5) {
         j = j + 1;
     }
     i = i + 1;
 }
 
-const flag = true;
-const n = 0;
+var flag = true;
+var n = 0;
 while (flag == true) {
     n = n + 1;
     if (n > 3) {

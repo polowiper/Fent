@@ -1,15 +1,15 @@
-const greeting = "Hello";
-const name = "World";
-const message = "Hello, World!";
-const empty = "";
-const withspaces = "   spaces   ";
-const numbers = "12345";
+var greeting = "Hello";
+var name = "World";
+var message = "Hello, World!";
+var empty = "";
+var withspaces = "   spaces   ";
+var numbers = "12345";
 
 print(greeting);
 print(name);
 print(message);
 
-const str = "Test";
+var str = "Test";
 print(str);
 
 return 0;

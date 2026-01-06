@@ -29,7 +29,7 @@ The generated assembly can then be assembled with NASM and linked to create nati
 ### Language Features
 
 - **Primitive Types**: Integers, Booleans, Strings
-- **Variables**: Immutable by default using `var` keyword (despite the name, they're const)
+- **Variables**: Mutable variables using `var` keyword
 - **Functions**: First-class functions with parameters and return values
 - **Control Flow**: `if`/`else` statements and `while` loops
 - **Expressions**: Binary operators (`+`, `-`, `*`, `/`, `%`, `==`, `<`, `>`), unary operators (`-`, `!`)
@@ -122,7 +122,7 @@ make compile FILE=myprogram.fent
 
 ### Variables
 
-Variables are declared with the `var` keyword and are immutable (const):
+Variables are declared with the `var` keyword and are mutable:
 
 ```fent
 var x = 42;
@@ -130,11 +130,11 @@ var message = "Hello World";
 var flag = true;
 ```
 
-Note: Despite the `var` keyword name, these are actually constant/immutable bindings. Variables can be reassigned using regular assignment:
+Variables can be reassigned using regular assignment:
 
 ```fent
 var counter = 0;
-counter = counter + 1;  // Reassignment
+counter = counter + 1;  // Reassignment works
 ```
 
 ### Functions
@@ -157,7 +157,7 @@ var result = add(10, 20);
 greet("World");
 ```
 
-Function parameters are immutable by default. To allow mutation, use the `var` keyword:
+All function parameters are immutable by default. To allow modification of parameters within a function, prefix them with the `var` keyword:
 
 ```fent
 define increment(var x) {
@@ -396,12 +396,11 @@ Type checking is minimal - the code generator infers types from literals and var
 ### Limitations & Design Decisions
 
 1. **No Runtime String Concatenation**: String concatenation only works at compile-time
-2. **Immutability by Default**: Variables declared with `var` are conceptually const but can be reassigned
-3. **No Type Annotations**: Types are inferred from literals
-4. **Limited Standard Library**: Only `print()` function available
-5. **Single File Compilation**: No module system or separate compilation
-6. **No Comments**: Language doesn't support comment syntax
-7. **Integer-Only Math**: Floating-point is not implemented despite lexer support
+2. **No Type Annotations**: Types are inferred from literals
+3. **Limited Standard Library**: Only `print()` function available
+4. **Single File Compilation**: No module system or separate compilation
+5. **No Comments**: Language doesn't support comment syntax
+6. **Integer-Only Math**: Floating-point is not implemented despite lexer support
 
 ## Examples
 

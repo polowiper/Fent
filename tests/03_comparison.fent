@@ -1,13 +1,13 @@
-const a = 10;
-const b = 20;
-const c = 10;
+var a = 10;
+var b = 20;
+var c = 10;
 
-const less = a < b;
-const greater = b > a;
-const equal = a == c;
-const notequal = a == b;
+var less = a < b;
+var greater = b > a;
+var equal = a == c;
+var notequal = a == b;
 
-const complexcmp = (a + 5) < (b - 5);
-const chain = a < b;
+var complexcmp = (a + 5) < (b - 5);
+var chain = a < b;
 
 return less;

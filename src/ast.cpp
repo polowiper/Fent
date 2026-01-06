@@ -92,10 +92,10 @@ public:
     ExprPtr initializer = parseExpression();
     expect(TokenKind::Semicolon, "Expected ';' after variable declaration");
 
-    return std::make_unique<VarDeclStmt>(name, std::move(initializer), true);
+    return std::make_unique<VarDeclStmt>(name, std::move(initializer), false); // var means mutable, so isConst = false
   }
 
-  // define foo(const a, const b) { body }
+  // define foo(var a, var b) { body }
   StmtPtr parseFunctionDef() {
     expect(TokenKind::Identifier, "Expected function name");
     std::string name = previous().lexeme;
@@ -105,13 +105,13 @@ public:
     std::vector<FunctionParam> parameters;
     if (!check(TokenKind::Rpar)) {
       do {
-        bool isVar = false;
+        bool isMutable = false;
         if (match(TokenKind::Var)) {
-          isVar = true;
+          isMutable = true;
         }
         expect(TokenKind::Identifier, "Expected parameter name");
         std::string paramName = previous().lexeme;
-        parameters.emplace_back(paramName, isVar);
+        parameters.emplace_back(paramName, !isMutable); // isConst is opposite of isMutable
       } while (match(TokenKind::Comma));
     }
 
@@ -362,7 +362,7 @@ void printStmt(std::ostream &out, const Stmt *stmt, int indent) {
     printExpr(out, expr->expression.get(), indent + INDENT_LEVEL / 2);
   } else if (auto *varDecl = dynamic_cast<const VarDeclStmt *>(stmt)) {
     out << ind << "VarDeclStmt: " << varDecl->name
-        << (varDecl->isVar ? " (const)" : "") << "\n";
+        << (varDecl->isConst ? " (const)" : " (mutable)") << "\n";
     out << ind << "  Initializer:\n";
     printExpr(out, varDecl->initializer.get(), indent + INDENT_LEVEL);
   } else if (auto *assign = dynamic_cast<const AssignStmt *>(stmt)) {

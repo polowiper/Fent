@@ -1,26 +1,26 @@
-const x = 10;
+var x = 10;
 
 {
-    const y = 20;
-    const z = x + y;
+    var y = 20;
+    var z = x + y;
 }
 
 {
-    const a = 1;
+    var a = 1;
     {
-        const b = 2;
+        var b = 2;
         {
-            const c = 3;
-            const sum = a + b + c;
+            var c = 3;
+            var sum = a + b + c;
         }
     }
 }
 
 if (x > 5) {
     {
-        const inner = 42;
+        var inner = 42;
     }
-    const outer = 99;
+    var outer = 99;
 }
 
 return x;

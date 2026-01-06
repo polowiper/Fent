@@ -346,8 +346,8 @@ string tokenKindToString(TokenKind kind) {
     return "While";
   case TokenKind::Return:
     return "Return";
-  case TokenKind::Const:
-    return "Const";
+  case TokenKind::Var:
+    return "Var";
   case TokenKind::Define:
     return "Define";
   case TokenKind::Plus:

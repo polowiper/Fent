@@ -72,7 +72,7 @@ public:
   explicit ExprStmt(ExprPtr expr) : expression(std::move(expr)) {}
 };
 
-// const x = 10;
+// var x = 10;
 class VarDeclStmt : public Stmt {
 public:
   std::string name;
@@ -140,7 +140,8 @@ struct FunctionParam {
       : name(std::move(n)), isConst(constant) {}
 };
 
-// Function definition: define foo(const a, const b) { body }
+// Function definition: define foo(a, b) { body }
+// Or with mutable params: define foo(var a, var b) { body }
 class FunctionDef : public Stmt {
 public:
   std::string name;

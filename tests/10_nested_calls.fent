@@ -1,23 +1,23 @@
-define add(const a, const b) {
+define add(var a, var b) {
     return a + b;
 }
 
-define multiply(const a, const b) {
+define multiply(var a, var b) {
     return a * b;
 }
 
-define compute(const x, const y, const z) {
-    const sum = add(x, y);
-    const prod = multiply(sum, z);
+define compute(var x, var y, var z) {
+    var sum = add(x, y);
+    var prod = multiply(sum, z);
     return prod;
 }
 
-const a = 5;
-const b = 10;
-const c = 2;
+var a = 5;
+var b = 10;
+var c = 2;
 
-const result = compute(a, b, c);
-const nested = add(multiply(a, b), multiply(b, c));
-const deep = add(add(a, b), add(c, a));
+var result = compute(a, b, c);
+var nested = add(multiply(a, b), multiply(b, c));
+var deep = add(add(a, b), add(c, a));
 
 return result;

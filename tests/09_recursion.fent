@@ -1,33 +1,33 @@
-define factorial(const n) {
+define factorial(var n) {
     if (n < 2) {
         return 1;
     }
-    const prev = n - 1;
-    const result = factorial(prev);
+    var prev = n - 1;
+    var result = factorial(prev);
     return n * result;
 }
 
-define fibonacci(const n) {
+define fibonacci(var n) {
     if (n < 2) {
         return n;
     }
-    const n1 = n - 1;
-    const n2 = n - 2;
-    const fib1 = fibonacci(n1);
-    const fib2 = fibonacci(n2);
+    var n1 = n - 1;
+    var n2 = n - 2;
+    var fib1 = fibonacci(n1);
+    var fib2 = fibonacci(n2);
     return fib1 + fib2;
 }
 
-define countdown(const n) {
+define countdown(var n) {
     if (n < 1) {
         return 0;
     }
-    const next = n - 1;
+    var next = n - 1;
     return countdown(next);
 }
 
-const fact5 = factorial(5);
-const fib7 = fibonacci(7);
-const count = countdown(10);
+var fact5 = factorial(5);
+var fib7 = fibonacci(7);
+var count = countdown(10);
 
 return fact5;

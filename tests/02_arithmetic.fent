@@ -1,14 +1,14 @@
-const a = 10;
-const b = 3;
+var a = 10;
+var b = 3;
 
-const sum = a + b;
-const diff = a - b;
-const prod = a * b;
-const quot = a / b;
-const mod = a % b;
+var sum = a + b;
+var diff = a - b;
+var prod = a * b;
+var quot = a / b;
+var mod = a % b;
 
-const complex = a + b * 2 - 4 / 2;
-const parens = (a + b) * 2;
-const nested = ((a + 1) * (b - 1)) / 2;
+var complex = a + b * 2 - 4 / 2;
+var parens = (a + b) * 2;
+var nested = ((a + 1) * (b - 1)) / 2;
 
 return sum;
